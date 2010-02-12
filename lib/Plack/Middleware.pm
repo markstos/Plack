@@ -77,6 +77,16 @@ with a middleware:
   $app = Plack::Middleware::Foo->wrap($app, %options);
   $app = Plack::Middleware::Bar->wrap($app, %options);
 
+=head1 ATTRIBUTES
+
+=over 4
+
+=item app
+
+Returns the original application object (before it is wrapped).
+
+=back
+
 =head1 SEE ALSO
 
 L<Plack> L<Plack::Builder>
