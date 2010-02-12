@@ -147,17 +147,18 @@ The constructor accepts either a hash or a hash-ref and uses that to
 create the instance with. It will call no other methods and simply return
 the instance that is created.
 
-=item prepare_app
-
-This method is called by C<to_app> and is meant as a hook to be used to
-prepare your component before it is packaged as a PSGI C<$app>.
-
 =item to_app
 
 This is the method used in several parts of the Plack infrastructure to
 convert your component into a PSGI C<$app>. You should not ever need to
 override this method, it is recommended to use C<prepare_app> and C<call>
 instead.
+
+=item prepare_app
+
+This method is called by C<to_app> before it calls the C<call> method. It does
+nothing by default. It is an optional hook that you can use to prepare your
+component before it is packaged as a PSGI C<$app>.
 
 =back
 
