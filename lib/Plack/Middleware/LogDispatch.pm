@@ -9,6 +9,10 @@ sub prepare_app {
     unless ($self->logger) {
         Carp::croak "logger is not defined";
     }
+    # Support lazy-loading the logging object.
+    if (ref $self->logger eq 'CODE') {
+        $self->{logger} = $self->logger->();
+    }
 }
 
 sub call {
@@ -52,6 +56,19 @@ Plack::Middleware::LogDispatch - Uses Log::Dispatch to configure logger
       enable "LogDispatch", logger => Log::Dispatch::Config->instance;
       ...
   }
+
+  # Use a code-ref to load Log::Dispatch on-demand the first time it is used:
+  builder {
+      enable "LogDispatch", logger => sub {
+          require Log::Dispatch;
+          require Log::Dispatch::File;
+          my $logger = Log::Dispatch->new;
+          $logger->add( Log::Dispatch::File->new(...) );
+
+      },
+      $app;
+  }
+
 
 =head1 DESCRIPTION
 
