@@ -53,6 +53,10 @@ Plack::Middleware::LogDispatch - Uses Log::Dispatch to configure logger
       ...
   }
 
+  # Now the PSGI app can access the Log::Dispatch object through
+  # the PSGI environment:
+  $env->{'psgix.logger'}->({ level => "debug", message => "This is debug" });
+
 =head1 DESCRIPTION
 
 LogDispatch is a Plack::Middleware component that allows you to use
@@ -64,7 +68,7 @@ L<Log::Dispatch> to configure logging object.
 
 =item logger
 
-Log::Dispatch object to send logs to. Required.
+L<Log::Dispatch> object to send logs to. Required.
 
 =back
 

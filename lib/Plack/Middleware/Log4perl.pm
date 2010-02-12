@@ -55,6 +55,10 @@ Plack::Middleware::Log4perl - Uses Log::Log4perl to configure logger
   # Or let middleware to configure log4perl
   enable "Log4perl", category => "plack", conf => '/path/to/log.conf';
 
+  # Now the PSGI app can access the Log::Dispatch object through
+  # the PSGI environment:
+  $env->{'psgix.logger'}->({ level => "debug", message => "This is debug" });
+
 =head1 DESCRIPTION
 
 Log4perl is a Plack::Middleware component that allows you to use
