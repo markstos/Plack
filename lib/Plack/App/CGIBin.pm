@@ -84,7 +84,7 @@ so, uses L<CGI::Compile> to compile a CGI script into a sub (like
 L<ModPerl::Registry>) and then run it as a persistent application
 using L<CGI::Emulate::PSGI>.
 
-If the give file is not a perl script, it executes the script just
+If the given file is not a perl script, it executes the script just
 like a normal CGI script with fork & exec. This is like a normal web
 server mode and no performance benefit is achieved.
 
