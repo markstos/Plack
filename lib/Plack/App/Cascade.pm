@@ -112,6 +112,6 @@ Tatsuhiko Miyagawa
 
 =head1 SEE ALSO
 
-L<Plack::App::URLMap> Rack::Cascade
+L<Plack::App::URLMap>, L<Rack::Cascade|http://rack.rubyforge.org/doc/Rack/Cascade.html>
 
 =cut
