@@ -241,7 +241,11 @@ sub response_cb {
 
     my $body_filter = sub {
         my($cb, $res) = @_;
+
+        # This simplest case is handled here. The callback is passed the response and will modify it by reference.
+        # The rest of the routine concerns the possiblity of returning a body filter callback, which is not required.
         my $filter_cb = $cb->($res);
+
         # If response_cb returns a callback, treat it as a $body filter
         if (defined $filter_cb && ref $filter_cb eq 'CODE') {
             Plack::Util::header_remove($res->[1], 'Content-Length');
@@ -263,6 +267,9 @@ sub response_cb {
             } else {
                 return $filter_cb;
             }
+        }
+        else {
+            # no body filter was defined.
         }
     };
 
