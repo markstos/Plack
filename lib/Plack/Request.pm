@@ -2,7 +2,7 @@ package Plack::Request;
 use strict;
 use warnings;
 use 5.008_001;
-our $VERSION = '0.9959';
+our $VERSION = '0.9967';
 $VERSION = eval $VERSION;
 
 use HTTP::Headers;
@@ -542,7 +542,8 @@ Shortcut to $req->headers->user_agent.
 
 Returns GET and POST parameters with a CGI.pm-compatible param
 method. This is an alternative method for accessing parameters in
-$req->parameters.
+$req->parameters. Unlike CGI.pm, it does I<not> allow
+setting or modifying query parameters.
 
     $value  = $req->param( 'foo' );
     @values = $req->param( 'foo' );

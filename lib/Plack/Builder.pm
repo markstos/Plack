@@ -124,13 +124,6 @@ Plack::Builder - OO and DSL to enable Plack Middlewares
       enable "Plack::Middleware::Foo";
       enable "Plack::Middleware::Bar", opt => "val";
       enable "Plack::Middleware::Baz";
-      enable sub {
-          my $app = shift;
-          sub {
-              my $env = shift;
-              $app->($env);
-          };
-      };
       $app;
   };
 
@@ -189,7 +182,13 @@ which is PSGI application that consumes C<$env> in runtime. So:
   builder {
       enable sub {
           my $app = shift;
-          sub { my $env = shift; $app->($env) };
+          sub {
+              my $env = shift;
+              # do preprocessing
+              my $res = $app->($env);
+              # do postprocessing
+              return $res;
+          };
       };
       $app;
   };
@@ -241,6 +240,33 @@ line to set the default fallback app.
       mount "/foo" => sub { ... };
       mount "/" => $app;
   }
+
+Note that the C<builder> DSL returns a whole new PSGI application, which means
+
+=over 4
+
+=item *
+
+C<builder { ... }> should normally the last statement of a C<.psgi>
+file, because the return value of C<builder> is the application that
+actually is executed.
+
+=item *
+
+You can nest your C<builder> block, mixed with C<mount> (see URLMap
+support above):
+
+  builder {
+      mount "/foo" => builder {
+          mount "/bar" => $app;
+      }
+  }
+
+will locate the C<$app> under C</foo/bar> since the inner C<builder>
+block puts it under C</bar> and it results a new PSGI application
+which is located under C</foo> becuase of the outer C<builder> block.
+
+=back
 
 =head1 CONDITIONAL MIDDLEWARE SUPPORT
 

@@ -10,13 +10,18 @@ use t::FCGIUtils;
 my $lighty_port;
 my $fcgi_port;
 
-test_lighty_external(
-   sub {
-       ($lighty_port, $fcgi_port, my $needs_fix) = @_;
-       Plack::Test::Suite->run_server_tests(run_server_cb($needs_fix), $fcgi_port, $lighty_port);
-       done_testing();
-    }
-);
+for my $script_name ('', '/fastcgi') {
+    $ENV{PLACK_TEST_SCRIPT_NAME} = $script_name;
+    test_lighty_external(
+        sub {
+            ($lighty_port, $fcgi_port) = (shift, shift);
+            my $needs_fix = $script_name eq '' ? shift : 0;
+            Plack::Test::Suite->run_server_tests(run_server_cb($needs_fix), $fcgi_port, $lighty_port);
+        }
+    );
+}
+
+done_testing();
 
 {
     package Plack::Handler::FCGI::Manager;
@@ -35,8 +40,10 @@ sub run_server_cb {
     return sub {
         my($port, $app) = @_;
 
-        note "Applying LighttpdScriptNameFix" if $needs_fix;
-        $app = Plack::Middleware::LighttpdScriptNameFix->wrap($app) if $needs_fix;
+        if ($needs_fix) {
+            note "Applying LighttpdScriptNameFix";
+            $app = Plack::Middleware::LighttpdScriptNameFix->wrap($app);
+        }
 
         $| = 0; # Test::Builder autoflushes this. reset!
 

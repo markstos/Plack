@@ -3,7 +3,7 @@ package Plack;
 use strict;
 use warnings;
 use 5.008_001;
-our $VERSION = '0.9959';
+our $VERSION = '0.9967';
 $VERSION = eval $VERSION;
 
 1;
@@ -211,7 +211,13 @@ Aaron Trevena
 
 =head1 SEE ALSO
 
-L<PSGI> L<http://plackperl.org/>
+The L<PSGI> specification upon which Plack is based.
+
+L<http://plackperl.org/>
+
+The Plack wiki: L<https://github.com/miyagawa/Plack/wiki>
+
+The Plack FAQ: L<https://github.com/miyagawa/Plack/wiki/Faq>
 
 =head1 LICENSE
 

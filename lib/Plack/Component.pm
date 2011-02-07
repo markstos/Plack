@@ -81,9 +81,9 @@ Plack::App::* you should inherit from this directly.
 
 =item call ($env)
 
-You are expected to implement a C<call> method in your component. This is
-where all the work gets done. It receives the PSGI C<$env> hash-ref as an
-argument and is expected to return a proper PSGI response value.
+You are expected to implement a C<call> method in your component. This
+is where all the work gets done. It receives the PSGI C<$env> hash-ref
+as an argument and is expected to return a proper PSGI response value.
 
 =back
 
@@ -109,7 +109,27 @@ convert your component into a PSGI C<$app>. You should not ever need to
 override this method, it is recommended to use C<prepare_app> and C<call>
 instead.
 
+=item response_cb
+
+This is a wrapper for C<response_cb> in L<Plack::Util>. See
+L<Plack::Middleware/RESPONSE CALLBACK> for details.
+
 =back
+
+=head1 OBJECT LIFECYCLE
+
+Objects for the derived classes (Plack::App::* or
+Plack::Middleware::*) are created at the PSGI application compile
+phase using C<new>, C<prepare_app> and C<to_app>, and the created
+object persists during the web server lifecycle, unless it is running
+on the non-persistent environment like CGI. C<call> is invoked against
+the same object whenever a new request comes in.
+
+You can check if it is running in a persistent environment by checking
+C<psgi.run_once> key in the C<$env> being true (non-persistent) or
+false (persistent), but it is best for you to write your middleware
+safe in the persistent environment. To accomplish that, you should
+avoid saving per-request data like C<$env> in your object.
 
 =head1 BACKWARDS COMPATIBILITY
 

@@ -17,7 +17,7 @@ requires 'Try::Tiny';
 requires 'parent';
 
 requires 'Devel::StackTrace', 1.23;         # Middleware::StackTrace
-requires 'Devel::StackTrace::AsHTML', 0.09; # Middleware::StackTrace
+requires 'Devel::StackTrace::AsHTML', 0.11; # Middleware::StackTrace
 
 requires 'Filesys::Notify::Simple';         # plackup -r
 
@@ -36,6 +36,11 @@ install_script 'scripts/plackup';
 
 auto_install;
 auto_set_repository;
+
+resources
+  homepage      => "http://plackperl.org",
+  bugtracker    => "https://github.com/miyagawa/plack/issues";
+
 WriteAll;
 
 warn <<RECOMMENDS;
