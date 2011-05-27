@@ -84,6 +84,9 @@ sub cookies {
 sub query_parameters {
     my $self = shift;
     $self->env->{'plack.request.query'} ||= Hash::MultiValue->new($self->uri->query_form);
+
+    # Call clone to return to make sure the value returned is read-only. 
+    return $self->env->{'plack.request.query'}->clone;
 }
 
 sub content {
@@ -132,7 +135,8 @@ sub body_parameters {
         $self->_parse_request_body;
     }
 
-    return $self->env->{'plack.request.body'};
+    # Call clone() to provide a read-only copy 
+    return $self->env->{'plack.request.body'}->clone;
 }
 
 # contains body + query
@@ -144,6 +148,7 @@ sub parameters {
         my $body  = $self->body_parameters;
         Hash::MultiValue->new($query->flatten, $body->flatten);
     };
+    return $self->env->{'plack.request.merged'}->clone; 
 }
 
 sub uploads {

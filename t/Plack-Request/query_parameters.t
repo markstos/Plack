@@ -13,7 +13,7 @@ my $app = sub {
     $b->{foo} = 'query-updated';
 
     my $b2 = $req->query_parameters;
-    is ($b2->{foo}, "query-updated", "query parameters are read-write");
+    is ($b2->{foo}, "bar", "query parameters are read-only");
 
     $req->new_response(200)->finalize;
 };

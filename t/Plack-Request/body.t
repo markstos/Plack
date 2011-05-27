@@ -14,7 +14,7 @@ my $app = sub {
     $b->{foo} = 'body-updated';
 
     my $b2 = $req->body_parameters;
-    is ($b2->{foo}, "body-updated", "body parameters are read-write");
+    is ($b2->{foo}, "bar", "body parameters are read-only");
 
     $req->new_response(200)->finalize;
 };
